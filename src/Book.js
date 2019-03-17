@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 
-class Api extends Component {
+class Book extends Component {
     handleGetData = (event) => {
         event.preventDefault();
         const items = event.target.items;
@@ -28,4 +28,4 @@ class Api extends Component {
     }
   }
 
-  export default Api;
+  export default Book;

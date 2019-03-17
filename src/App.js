@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import Api from './Api';
+import Book from './Book';
+import Json from './Json';
 import './App.css';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-        items: []
+        items: [],
+        post: []
     };
     this.getData = this.getData.bind(this);
+    this.makePost = this.makePost.bind(this);
   }
 
   getData() {
@@ -16,10 +19,34 @@ class App extends Component {
       .then(response => response.json())
       .then((data) => {
           this.setState({
-              items: data.items
+              items: data.items,
+              post: []
           });
       });
   };
+
+  makePost(){
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      body: JSON.stringify({
+          title: 'TestPost',
+          body: 'Test Post Was Successful',
+          userId: 1
+      }),
+      headers: {
+          "Content-type": "application/json; charset=UTF-8"
+      }
+  })
+  .then(response => response.json())
+  .then((json) => {
+    const jsonArray = [];
+    jsonArray.push(json);
+    this.setState({
+      items: [],
+      post: jsonArray,
+    })
+  })
+  }
 
   render() {
     return (
@@ -35,7 +62,8 @@ class App extends Component {
           </a>
         </header>
         <section>
-          <Api handleGetData={this.getData} items={this.state.items}/>
+          <Book handleGetData={this.getData} items={this.state.items} />
+          <Json handleMakePost={this.makePost} post={this.state.post} />
         </section>
       </div>
     );
