@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Api from './Api';
 import './App.css';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        items: []
+    };
+    this.getData = this.getData.bind(this);
+  }
+
+  getData() {
+      fetch('https://www.googleapis.com/books/v1/volumes?q=subject:Juvenile')
+      .then(response => response.json())
+      .then((data) => {
+          this.setState({
+              items: data.items
+          });
+      });
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
           <a
             className="App-link"
             href="https://reactjs.org"
@@ -20,9 +34,14 @@ class App extends Component {
             Learn React
           </a>
         </header>
+        <section>
+          <Api handleGetData={this.getData} items={this.state.items}/>
+        </section>
       </div>
     );
   }
 }
+
+
 
 export default App;
